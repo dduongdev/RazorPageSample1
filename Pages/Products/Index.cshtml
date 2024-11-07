@@ -1,0 +1,71 @@
+﻿@page "{id:int?}"
+@model ProductPageModel
+
+@{
+	var product = Model.Product;
+	var products = Model.products;
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form style="display: flex; gap: 4px;">
+	<input placeholder="Nhập id sản phẩm" name="id" />
+	<button type="submit" class="btn btn-primary">Tìm kiếm</button>
+</form>
+
+@if (product != null)
+{
+	<h2>@product.Name</h2>
+	<p>Mô tả: @product.Description</p>
+	<p>Giá: @product.Price</p>
+	<a asp-page="Index" asp-route-id="">Danh sách sản phẩm</a>
+}
+else
+{
+	<table class="table">
+		<thead>
+			<tr>
+				<th>
+					@Html.DisplayNameFor(Model => products[0].Name)
+				</th>
+				<th>
+					@Html.DisplayNameFor(Model => products[0].Description)
+				</th>
+				<th>
+					@Html.DisplayNameFor(Model => products[0].Price)
+				</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var item in products)
+			{
+				<tr>
+					<td>
+						<a asp-page="Index" asp-route-id="@item.Id">@Html.DisplayFor(Model => item.Name)</a>
+					</td>
+					<td>
+						@Html.DisplayFor(Model => item.Description)
+					</td>
+					<td>
+						@Html.DisplayFor(Model => item.Price)
+					</td>
+					<td>
+						<a asp-page="Edit" asp-route-id="@item.Id">Edit</a>
+						<a asp-page="Delete" asp-route-id="@item.Id">Delete</a>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+	<hr />
+	<a class="btn btn-primary" asp-page="Create">
+		Thêm sản phẩm
+	</a>
+	<a class="btn btn-primary" asp-page="Index" asp-page-handler="RemoveAll">
+		Xóa tất cả
+	</a>
+	<a class="btn btn-primary" asp-page="Index" asp-page-handler="LoadAll">
+		Nạp sản phẩm
+	</a>
+}
